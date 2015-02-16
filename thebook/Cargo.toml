@@ -1,0 +1,9 @@
+[package]
+
+name = "The (Rust) Book"
+version = "0.0.1"
+authors = [ "Matthew Gilliard <matthew.gilliard@gmail.com>" ]
+
+[[bin]]
+
+name = "book"
