@@ -1,13 +1,49 @@
-use std::old_io;
+#![allow(unstable)]
 
+use std::io;
+use std::rand;
+use std::cmp::Ordering;
+    
 fn main() {
     println!("Guess the number!");
 
-    println!("Please input your guess.");
+    let answer = (rand::random::<u32>() % 100) + 1;
+    println!("(shhh the secret number is {})", answer);
 
-    let input = old_io::stdin().read_line()
-                           .ok()
-                           .expect("Failed to read line");
+    loop {
+        print!("Please input your guess: ");
 
-    println!("You guessed: {}", input);
+        let parsed = io::stdin().read_line()
+            .ok()
+            .expect("Failed to read line")
+            .trim()
+            .parse::<u32>();
+        
+        let input = match parsed {
+            Some(num) => num,
+            None => {
+                println!("That wasn't a number!");
+                continue;
+            }
+        };
+        
+        //    println!("You guessed: {}", input);
+
+        match cmp(input, answer){
+            Ordering::Less => { println!("{} is too small!", input); },
+            Ordering::Greater => { println!("{} is too big!", input); },
+            Ordering::Equal => {
+                println!("You WIN!");
+                break;
+            }
+        }
+    }
+
+    println!("Finished, bye xx");
+}
+
+fn cmp(a:u32, b:u32) -> Ordering {
+    if a<b { Ordering::Less }
+    else if b<a { Ordering::Greater }
+    else { Ordering::Equal }
 }
